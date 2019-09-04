@@ -9,7 +9,12 @@ public class Jeopardy extends EasyApp
     private ArrayList<TextField> scoreFields;
 
     private Label playerIndicator;
-
+    
+    private ArrayList<ArrayList> science;
+    private ArrayList<ArrayList> sports;
+    private ArrayList<ArrayList> history;
+    private ArrayList<ArrayList> math;
+    
     private ArrayList<Button> scienceButtons;
     private ArrayList<Button> sportsButtons;
     private ArrayList<Button> historyButtons;
@@ -32,7 +37,7 @@ public class Jeopardy extends EasyApp
     private int currentPlayer;
     private int playerCount;
 
-    private Jeopardy()   // Constructor - change window appearance
+    public Jeopardy()   // Constructor - change window appearance
     {
         Label jeopardyLabel = addLabel("Jeopardy", 60, 30, 180, 60, this);
 
@@ -41,7 +46,7 @@ public class Jeopardy extends EasyApp
         scoreFields = new ArrayList<>();
         ArrayList<Label> playerNumbers = new ArrayList<>();
 
-        playerCount = 4;
+        playerCount = 5;
         scores = new ArrayList<>();
         for (int i = 0; i < playerCount; i++)
         {
@@ -55,14 +60,14 @@ public class Jeopardy extends EasyApp
         Label historyLabel = addLabel("History", 250, 100, 100, 50, this);
         Label mathLabel = addLabel("Math", 350, 100, 100, 50, this);
 
-        playAgainButton = addButton("Play again",50,400,400,50,this);
+        playAgainButton = addButton("Play again",150,400,200,50,this);
 
-        playerIndicator = addLabel("Current Player : 1", 50, 450, 400, 50, this);
-
-
+        playerIndicator = addLabel("Current Player : 1", 150, 450, 200, 50, this);
 
         currentPlayer = 0;
-
+        
+        
+        
         scienceButtons = new ArrayList<>();
         sportsButtons = new ArrayList<>();
         historyButtons = new ArrayList<>();
@@ -77,80 +82,64 @@ public class Jeopardy extends EasyApp
         sportsQuestions = new ArrayList<>();
         historyQuestions = new ArrayList<>();
         mathQuestions = new ArrayList<>();
-
+        
         // Create Science Questions
 
         scienceQuestions.add("Science 200");
         scienceQuestions.add("Science 400");
         scienceQuestions.add("Science 600");
-        scienceQuestions.add("Science 800");
-        scienceQuestions.add("Science 1000");
 
         scienceAnswers.add("1");
         scienceAnswers.add("2");
         scienceAnswers.add("3");
-        scienceAnswers.add("4");
-        scienceAnswers.add("5");
 
         // Create Sports Questions
 
         sportsQuestions.add("Sports 200");
         sportsQuestions.add("Sports 400");
         sportsQuestions.add("Sports 600");
-        sportsQuestions.add("Sports 800");
-        sportsQuestions.add("Sports 1000");
 
         sportsAnswers.add("1");
         sportsAnswers.add("2");
         sportsAnswers.add("3");
-        sportsAnswers.add("4");
-        sportsAnswers.add("5");
 
         // Create History Questions
 
         historyQuestions.add("History 200");
         historyQuestions.add("History 400");
         historyQuestions.add("History 600");
-        historyQuestions.add("History 800");
-        historyQuestions.add("History 1000");
 
         historyAnswers.add("1");
         historyAnswers.add("2");
         historyAnswers.add("3");
-        historyAnswers.add("4");
-        historyAnswers.add("5");
 
         // Create Math Questions
 
         mathQuestions.add("Math 200");
         mathQuestions.add("Math 400");
         mathQuestions.add("Math 600");
-        mathQuestions.add("Math 800");
-        mathQuestions.add("Math 1000");
 
         mathAnswers.add("1");
         mathAnswers.add("2");
         mathAnswers.add("3");
-        mathAnswers.add("4");
-        mathAnswers.add("5");
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             String score = "$" + (i + 1) * 200;
             int top = 150 + i * 50;
 
             scienceButtons.add(addButton(score, 50, top, 100, 50, this));
-            scienceButtons.get(scienceButtons.size() - 1).setFont(new Font("Arial", Font.BOLD, 16));
+            scienceButtons.get(i).setFont(new Font("Arial", Font.BOLD, 16));
 
             sportsButtons.add(addButton(score, 150, top, 100, 50, this));
-            sportsButtons.get(sportsButtons.size() - 1).setFont(new Font("Arial", Font.BOLD, 16));
+            sportsButtons.get(i).setFont(new Font("Arial", Font.BOLD, 16));
 
             historyButtons.add(addButton(score, 250, top, 100, 50, this));
-            historyButtons.get(historyButtons.size() - 1).setFont(new Font("Arial", Font.BOLD, 16));
+            historyButtons.get(i).setFont(new Font("Arial", Font.BOLD, 16));
 
             mathButtons.add(addButton(score, 350, top, 100, 50, this));
-            mathButtons.get(mathButtons.size() - 1).setFont(new Font("Arial", Font.BOLD, 16));
+            mathButtons.get(i).setFont(new Font("Arial", Font.BOLD, 16));
         }
-
+        
         setSize(500,500);
         setTitle("Jeopardy - (c) 2005 Dave Mulkey, Germany");
         for (Label l : playerNumbers)
@@ -180,7 +169,7 @@ public class Jeopardy extends EasyApp
         {
             currentPlayer = 0;
             playerIndicator.setText("Current Player : 1");
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
                 scienceButtons.get(i).setEnabled(true);
                 sportsButtons.get(i).setEnabled(true);
@@ -195,25 +184,25 @@ public class Jeopardy extends EasyApp
         }
         else
         {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 3; i++) {
                 if (source == scienceButtons.get(i))
                 {
-                    questionParser(scienceButtons, scienceQuestions, scienceAnswers, i);
+                    asker(scienceButtons, scienceQuestions, scienceAnswers, i);
                 }
 
                 if (source == sportsButtons.get(i))
                 {
-                    questionParser(sportsButtons, sportsQuestions, sportsAnswers, i);
+                    asker(sportsButtons, sportsQuestions, sportsAnswers, i);
                 }
 
                 if (source == historyButtons.get(i))
                 {
-                    questionParser(historyButtons, historyQuestions, historyAnswers, i);
+                    asker(historyButtons, historyQuestions, historyAnswers, i);
                 }
 
                 if (source == mathButtons.get(i))
                 {
-                    questionParser(mathButtons, mathQuestions, mathAnswers, i);
+                    asker(mathButtons, mathQuestions, mathAnswers, i);
                 }
             }
             scoreFields.get(currentPlayer).setText(scores.get(currentPlayer) + "");
@@ -224,7 +213,7 @@ public class Jeopardy extends EasyApp
         }
     }
 
-    private void questionParser(ArrayList Buttons, ArrayList Questions, ArrayList Answers, int question)
+    private void asker(ArrayList Buttons, ArrayList Questions, ArrayList Answers, int question)
     {
         Button questionButton = (Button) Buttons.get(question);
         String questionText = (String) Questions.get(question);
