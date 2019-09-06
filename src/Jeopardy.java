@@ -31,6 +31,9 @@ public class Jeopardy extends EasyApp
     public Jeopardy()   // Constructor - change window appearance
     {
         Label jeopardyLabel = addLabel("Jeopardy", 60, 30, 180, 60, this);
+        jeopardyLabel.setFont(new Font("Arial",Font.BOLD,36));
+        jeopardyLabel.setBackground(new Color(255,255,180));
+        jeopardyLabel.setForeground(Color.blue);
 
         Label scoreLabel = addLabel("Score", 250, 65, 50, 30, this);
         Label playerLabel = addLabel("Player", 250, 35, 50, 30, this);
@@ -57,26 +60,6 @@ public class Jeopardy extends EasyApp
 
         currentPlayer = 0;
 
-        scienceQuestions = new ArrayList<>();
-        scienceQuestions.add(new QuestionData("Science 200", "200", "", 0));
-        scienceQuestions.add(new QuestionData("Science 400", "400", "", 1));
-        scienceQuestions.add(new QuestionData("Science 600", "600", "", 2));
-
-        sportsQuestions = new ArrayList<>();
-        sportsQuestions.add(new QuestionData("Science 200", "200", "", 0));
-        sportsQuestions.add(new QuestionData("Science 400", "400", "", 1));
-        sportsQuestions.add(new QuestionData("Science 600", "600", "", 2));
-
-        historyQuestions = new ArrayList<>();
-        historyQuestions.add(new QuestionData("Science 200", "200", "", 0));
-        historyQuestions.add(new QuestionData("Science 400", "400", "", 1));
-        historyQuestions.add(new QuestionData("Science 600", "600", "", 2));
-
-        mathQuestions = new ArrayList<>();
-        mathQuestions.add(new QuestionData("Science 200", "200", "", 0));
-        mathQuestions.add(new QuestionData("Science 400", "400", "", 1));
-        mathQuestions.add(new QuestionData("Science 600", "600", "", 2));
-
         scienceButtons = new ArrayList<>();
         sportsButtons = new ArrayList<>();
         historyButtons = new ArrayList<>();
@@ -98,7 +81,27 @@ public class Jeopardy extends EasyApp
             mathButtons.add(addButton(score, 350, top, 100, 50, this));
             mathButtons.get(i).setFont(new Font("Arial", Font.BOLD, 16));
         }
-        
+
+        scienceQuestions = new ArrayList<>();
+        scienceQuestions.add(new QuestionData("Science 200", "200", "", scienceButtons.get(0), 0));
+        scienceQuestions.add(new QuestionData("Science 400", "400", "", scienceButtons.get(1), 1));
+        scienceQuestions.add(new QuestionData("Science 600", "600", "", scienceButtons.get(2), 2));
+
+        sportsQuestions = new ArrayList<>();
+        sportsQuestions.add(new QuestionData("Science 200", "200", "", sportsButtons.get(0), 0));
+        sportsQuestions.add(new QuestionData("Science 400", "400", "", sportsButtons.get(1), 1));
+        sportsQuestions.add(new QuestionData("Science 600", "600", "", sportsButtons.get(2), 2));
+
+        historyQuestions = new ArrayList<>();
+        historyQuestions.add(new QuestionData("Science 200", "200", "", historyButtons.get(0), 0));
+        historyQuestions.add(new QuestionData("Science 400", "400", "", historyButtons.get(1), 1));
+        historyQuestions.add(new QuestionData("Science 600", "600", "", historyButtons.get(2), 2));
+
+        mathQuestions = new ArrayList<>();
+        mathQuestions.add(new QuestionData("Science 200", "200", "", mathButtons.get(0), 0));
+        mathQuestions.add(new QuestionData("Science 400", "400", "", mathButtons.get(1), 1));
+        mathQuestions.add(new QuestionData("Science 600", "600", "", mathButtons.get(2), 2));
+
         setSize(500,500);
         setTitle("Jeopardy - (c) 2005 Dave Mulkey, Germany");
         for (Label l : playerNumbers)
@@ -106,9 +109,7 @@ public class Jeopardy extends EasyApp
             l.setBackground(new Color(255,255,180));
             l.setFont(new Font("Arial",Font.BOLD,16));
         }
-        jeopardyLabel.setFont(new Font("Arial",Font.BOLD,36));
-        jeopardyLabel.setBackground(new Color(255,255,180));
-        jeopardyLabel.setForeground(Color.blue);
+
         scoreLabel.setBackground(new Color(255,255,180));
         playerLabel.setBackground(new Color(255,255,180));
         setBackground(new Color(255,255,180));
@@ -145,25 +146,24 @@ public class Jeopardy extends EasyApp
         {
             for (int i = 0; i < 3; i++) {
                 if (source == scienceButtons.get(i))
-                { prompter(scienceButtons, scienceQuestions, i); }
+                { prompter(scienceQuestions, i); }
 
                 if (source == sportsButtons.get(i))
-                { prompter(sportsButtons, sportsQuestions, i); }
+                { prompter(sportsQuestions, i); }
 
                 if (source == historyButtons.get(i))
-                { prompter(historyButtons, historyQuestions, i); }
+                { prompter(historyQuestions, i); }
 
                 if (source == mathButtons.get(i))
-                { prompter(mathButtons, mathQuestions, i); }
+                { prompter(mathQuestions, i); }
             }
         }
     }
 
-    private void prompter(ArrayList<Button> buttons, ArrayList<QuestionData> questionData, int id)
+    private void prompter(ArrayList<QuestionData> questionData, int id)
     {
-        Button b = buttons.get(id);
         QuestionData qd = questionData.get(id);
-        box = new QuestionBox(b, qd, this);
+        box = new QuestionBox(qd, this);
         this.setVisible(false);
     }
 

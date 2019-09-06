@@ -6,15 +6,13 @@ public class QuestionBox extends EasyApp
 
     private Button enter;
     private Button getHint;
-    private Button questionButton;
 
     private TextArea answerField;
 
     private QuestionData questionData;
 
-    QuestionBox(Button button, QuestionData questionData, Jeopardy master)
+    QuestionBox(QuestionData questionData, Jeopardy master)
     {
-        questionButton = button;
         this.questionData = questionData;
 
         this.master = master;
@@ -31,7 +29,7 @@ public class QuestionBox extends EasyApp
     {
         if (source == enter)
         {
-            master.evaluate(answerField.getText(), questionData.getAnswer(), questionButton, questionData.getId());
+            master.evaluate(answerField.getText(), questionData.getAnswer(), questionData.getButton(), questionData.getId());
             this.dispose();
         }
         if (source == getHint)
