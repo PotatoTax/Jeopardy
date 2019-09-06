@@ -10,11 +10,6 @@ public class Jeopardy extends EasyApp
 
     private Label playerIndicator;
     
-    private ArrayList<ArrayList> science;
-    private ArrayList<ArrayList> sports;
-    private ArrayList<ArrayList> history;
-    private ArrayList<ArrayList> math;
-    
     private ArrayList<Button> scienceButtons;
     private ArrayList<Button> sportsButtons;
     private ArrayList<Button> historyButtons;
@@ -36,6 +31,7 @@ public class Jeopardy extends EasyApp
 
     private int currentPlayer;
     private int playerCount;
+    private QuestionBox box;
 
     public Jeopardy()   // Constructor - change window appearance
     {
@@ -163,7 +159,7 @@ public class Jeopardy extends EasyApp
 
     }
 
-    public void actions(Object source,String command)
+    public void actions(Object source, String command)
     {
         if (source == playAgainButton)
         {
@@ -205,11 +201,7 @@ public class Jeopardy extends EasyApp
                     asker(mathButtons, mathQuestions, mathAnswers, i);
                 }
             }
-            scoreFields.get(currentPlayer).setText(scores.get(currentPlayer) + "");
-            currentPlayer += 1;
-            if (currentPlayer + 1 > playerCount)
-            { currentPlayer = 0; }
-            playerIndicator.setText("Current Player : " + (currentPlayer + 1));
+
         }
     }
 
@@ -218,8 +210,15 @@ public class Jeopardy extends EasyApp
         Button questionButton = (Button) Buttons.get(question);
         String questionText = (String) Questions.get(question);
         String answer = (String) Answers.get(question);
+        box = new QuestionBox(questionButton,"None", questionText, answer,"None", question, this);
+        this.setVisible(false);
+    }
 
-        if (inputString(questionText).equalsIgnoreCase(answer))
+    public void evaluate(String userResponse, String answer, Button questionButton, int question)
+    {
+        box.dispose();
+        this.setVisible(true);
+        if (userResponse.equalsIgnoreCase(answer))
         {
             scores.set(currentPlayer, scores.get(currentPlayer) + 200 * (question + 1));
             output("Right!");
@@ -231,5 +230,10 @@ public class Jeopardy extends EasyApp
         }
 
         questionButton.setEnabled(false);
+        scoreFields.get(currentPlayer).setText(scores.get(currentPlayer) + "");
+        currentPlayer += 1;
+        if (currentPlayer + 1 > playerCount)
+        { currentPlayer = 0; }
+        playerIndicator.setText("Current Player : " + (currentPlayer + 1));
     }
 }
