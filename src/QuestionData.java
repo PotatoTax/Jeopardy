@@ -1,10 +1,10 @@
-public class QuestionData extends EasyApp {
+class QuestionData {
     private String question;
     private String answer;
     private String hint;
     private int id;
 
-    public QuestionData(String question, String answer, String hint, int id)
+    QuestionData(String question, String answer, String hint, int id)
     {
         this.question = question;
         this.answer = answer;
@@ -12,20 +12,20 @@ public class QuestionData extends EasyApp {
         this.id = id;
     }
 
-    public String getQuestion()
+    String getQuestion()
     {
         return question;
     }
 
-    public String getAnswer() {
+    String getAnswer() {
         return answer;
     }
 
-    public String getHint() {
+    String getHint() {
         return hint;
     }
 
-    public int getId() {
+    int getId() {
         return id;
     }
 }

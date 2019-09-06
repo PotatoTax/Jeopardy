@@ -9,21 +9,16 @@ public class Jeopardy extends EasyApp
     private ArrayList<TextField> scoreFields;
 
     private Label playerIndicator;
-    
+
     private ArrayList<Button> scienceButtons;
     private ArrayList<Button> sportsButtons;
     private ArrayList<Button> historyButtons;
     private ArrayList<Button> mathButtons;
 
-    private ArrayList<String> scienceAnswers;
-    private ArrayList<String> sportsAnswers;
-    private ArrayList<String> historyAnswers;
-    private ArrayList<String> mathAnswers;
-
-    private ArrayList<String> scienceQuestions;
-    private ArrayList<String> sportsQuestions;
-    private ArrayList<String> historyQuestions;
-    private ArrayList<String> mathQuestions;
+    private ArrayList<QuestionData> scienceQuestions;
+    private ArrayList<QuestionData> sportsQuestions;
+    private ArrayList<QuestionData> historyQuestions;
+    private ArrayList<QuestionData> mathQuestions;
 
     private Button playAgainButton;
 
@@ -61,63 +56,31 @@ public class Jeopardy extends EasyApp
         playerIndicator = addLabel("Current Player : 1", 150, 450, 200, 50, this);
 
         currentPlayer = 0;
-        
-        
-        
+
+        scienceQuestions = new ArrayList<>();
+        scienceQuestions.add(new QuestionData("Science 200", "200", "", 0));
+        scienceQuestions.add(new QuestionData("Science 400", "400", "", 1));
+        scienceQuestions.add(new QuestionData("Science 600", "600", "", 2));
+
+        sportsQuestions = new ArrayList<>();
+        sportsQuestions.add(new QuestionData("Science 200", "200", "", 0));
+        sportsQuestions.add(new QuestionData("Science 400", "400", "", 1));
+        sportsQuestions.add(new QuestionData("Science 600", "600", "", 2));
+
+        historyQuestions = new ArrayList<>();
+        historyQuestions.add(new QuestionData("Science 200", "200", "", 0));
+        historyQuestions.add(new QuestionData("Science 400", "400", "", 1));
+        historyQuestions.add(new QuestionData("Science 600", "600", "", 2));
+
+        mathQuestions = new ArrayList<>();
+        mathQuestions.add(new QuestionData("Science 200", "200", "", 0));
+        mathQuestions.add(new QuestionData("Science 400", "400", "", 1));
+        mathQuestions.add(new QuestionData("Science 600", "600", "", 2));
+
         scienceButtons = new ArrayList<>();
         sportsButtons = new ArrayList<>();
         historyButtons = new ArrayList<>();
         mathButtons = new ArrayList<>();
-
-        scienceAnswers = new ArrayList<>();
-        sportsAnswers = new ArrayList<>();
-        historyAnswers = new ArrayList<>();
-        mathAnswers = new ArrayList<>();
-
-        scienceQuestions = new ArrayList<>();
-        sportsQuestions = new ArrayList<>();
-        historyQuestions = new ArrayList<>();
-        mathQuestions = new ArrayList<>();
-        
-        // Create Science Questions
-
-        scienceQuestions.add("Science 200");
-        scienceQuestions.add("Science 400");
-        scienceQuestions.add("Science 600");
-
-        scienceAnswers.add("1");
-        scienceAnswers.add("2");
-        scienceAnswers.add("3");
-
-        // Create Sports Questions
-
-        sportsQuestions.add("Sports 200");
-        sportsQuestions.add("Sports 400");
-        sportsQuestions.add("Sports 600");
-
-        sportsAnswers.add("1");
-        sportsAnswers.add("2");
-        sportsAnswers.add("3");
-
-        // Create History Questions
-
-        historyQuestions.add("History 200");
-        historyQuestions.add("History 400");
-        historyQuestions.add("History 600");
-
-        historyAnswers.add("1");
-        historyAnswers.add("2");
-        historyAnswers.add("3");
-
-        // Create Math Questions
-
-        mathQuestions.add("Math 200");
-        mathQuestions.add("Math 400");
-        mathQuestions.add("Math 600");
-
-        mathAnswers.add("1");
-        mathAnswers.add("2");
-        mathAnswers.add("3");
 
         for (int i = 0; i < 3; i++) {
             String score = "$" + (i + 1) * 200;
@@ -182,39 +145,29 @@ public class Jeopardy extends EasyApp
         {
             for (int i = 0; i < 3; i++) {
                 if (source == scienceButtons.get(i))
-                {
-                    asker(scienceButtons, scienceQuestions, scienceAnswers, i);
-                }
+                { prompter(scienceButtons, scienceQuestions, i); }
 
                 if (source == sportsButtons.get(i))
-                {
-                    asker(sportsButtons, sportsQuestions, sportsAnswers, i);
-                }
+                { prompter(sportsButtons, sportsQuestions, i); }
 
                 if (source == historyButtons.get(i))
-                {
-                    asker(historyButtons, historyQuestions, historyAnswers, i);
-                }
+                { prompter(historyButtons, historyQuestions, i); }
 
                 if (source == mathButtons.get(i))
-                {
-                    asker(mathButtons, mathQuestions, mathAnswers, i);
-                }
+                { prompter(mathButtons, mathQuestions, i); }
             }
-
         }
     }
 
-    private void asker(ArrayList Buttons, ArrayList Questions, ArrayList Answers, int question)
+    private void prompter(ArrayList<Button> buttons, ArrayList<QuestionData> questionData, int id)
     {
-        Button questionButton = (Button) Buttons.get(question);
-        String questionText = (String) Questions.get(question);
-        String answer = (String) Answers.get(question);
-        box = new QuestionBox(questionButton,"None", questionText, answer,"None", question, this);
+        Button b = buttons.get(id);
+        QuestionData qd = questionData.get(id);
+        box = new QuestionBox(b, qd, this);
         this.setVisible(false);
     }
 
-    public void evaluate(String userResponse, String answer, Button questionButton, int question)
+    void evaluate(String userResponse, String answer, Button b, int question)
     {
         box.dispose();
         this.setVisible(true);
@@ -229,7 +182,7 @@ public class Jeopardy extends EasyApp
             output("Wrong..." );
         }
 
-        questionButton.setEnabled(false);
+        b.setEnabled(false);
         scoreFields.get(currentPlayer).setText(scores.get(currentPlayer) + "");
         currentPlayer += 1;
         if (currentPlayer + 1 > playerCount)
